@@ -7,7 +7,7 @@ class Cell extends React.Component {
 
     render() {
         return (
-            <button className = {"cell"}>
+            <button className = {"cell"} id = {this.props.id}>
                 {this.props.value}
             </button>
         );
