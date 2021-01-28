@@ -2,20 +2,28 @@ import { createStore } from 'redux';
 import expect from 'expect';
 import deepFreeze from 'deepfreeze';
 
-function updateSudoku (state, action) {
-    if (typeof state === undefined) {
-        console.log("generating state");
-        state = generateInitialGameState();
-    }
+function updateSudoku (state = generateInitialGameState(), action) {
     switch(action.type) {
         case 'TOGGLE_CELL':
-            return toggleCell(state.isToggled, action.index);
+            return {
+                ...state,
+                isToggled: toggleCell(state.isToggled, action.index)
+            };
         case 'ADD_CELL_VALUE':
-            return addCellValue(state.values, action.index, action.value);
+            return {
+                ...state,
+                values: addCellValue(state.values, action.index, action.value)
+            };
         case 'DELETE_CELL_VALUE':
-            return deleteCellValue(state.values, action.index);
+            return {
+                ...state,
+                values: deleteCellValue(state.values, action.index)
+            };
         case 'UPDATE_CELL_VALUE':
-            return updateCellValue(state.values, action.index, action.value);
+            return {
+                ...state,
+                values: updateCellValue(state.values, action.index, action.value)
+            };
         default:
             return state;
     }
@@ -39,11 +47,9 @@ const generateInitialGameState = () => {
 }
 
 const toggleCell = (list, index) => {
-    return [
-        ...list.slice(0, index),
-        !list[index],
-        ...list.slice(index + 1)
-    ];
+    let toggledList = Array(list.length).fill(false);
+    toggledList[index] = true;
+    return toggledList;
 };
 
 const addCellValue = (list, index, value) => {
@@ -72,12 +78,13 @@ const updateCellValue = (list, index, value) => {
 
 // Tests
 const testToggleCell = () => {
-    const listBefore = [false];
-    const listAfter = [true];
+    const listBefore = [false, false, false, false];
+    const listAfter = [false, true, false, false];
 
     deepFreeze(listBefore);
 
-    expect(toggleCell(listBefore, 0)).toEqual(listAfter);
+    expect(toggleCell(listBefore, 1)).toEqual(listAfter);
+    expect(listBefore.length).toEqual(listAfter.length);
 };
 
 const testAddCellValue = () => {
@@ -115,6 +122,5 @@ testUpdateCellValue();
 console.log("Tests have passed!");
 
 let store = createStore(updateSudoku, generateInitialGameState());
-console.log(store.getState());
 
 export default store;
