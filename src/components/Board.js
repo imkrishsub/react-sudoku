@@ -1,23 +1,29 @@
 import React from 'react';
-import Cell from './Cell.js';
-import store from '../store';
+import { connect } from 'react-redux';
 
-class Board extends React.Component {
-  render() {
-      let state = store.getState();
-      let elements = state.values;
-      return (
-        <div className="box-container">
-            {elements.map(function(boxes, boxIterator) {
-                return <div className="box">
-                {boxes.map(function(item, cellIterator) {
-                    return <Cell value={item} id = {boxIterator * 9 + cellIterator} key={boxIterator * 9 + cellIterator} />
-                })}
-                </div>
+const Board = ({values, clickState, dispatch}) => (
+    <div className="box-container">
+        {values.map((boxes, boxIterator) => {
+            return <div className="box">
+            {boxes.map((item, cellIterator) => {
+                let className = clickState[boxIterator*9 + cellIterator] ? "cell typable" : "cell";
+
+                return <button className = {className} id = {boxIterator*9 + cellIterator} key = {boxIterator * 9 + cellIterator} onClick = {() => dispatch({
+                    type: 'TOGGLE_CELL',
+                    index: boxIterator*9 + cellIterator
+                })}> {item}
+                </button>
             })}
-        </div>
-    );
-  }
-}
+            </div>
+        })}
+    </div>
+);
 
-export default Board;
+const mapStateToProps = (state) => {
+    return {
+        values: state.values,
+        clickState: state.clickState
+    };
+};
+
+export default connect(mapStateToProps)(Board);

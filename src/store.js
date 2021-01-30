@@ -7,7 +7,7 @@ function updateSudoku (state = generateInitialGameState(), action) {
         case 'TOGGLE_CELL':
             return {
                 ...state,
-                isToggled: toggleCell(state.isToggled, action.index)
+                clickState: toggleCell(state.clickState, action.index)
             };
         case 'ADD_CELL_VALUE':
             return {
@@ -40,19 +40,19 @@ const generateInitialGameState = () => {
                  [null, null, null, 4, null, 2, null, null, null],
                  [9, null, null, 7, null, null, 4, null, null],
                  [null, null, null, 1, null, 8, null, 2, 6]],
-        isToggled: Array(81).fill(false)
+        clickState: Array(81).fill(false)
     };
 
     return state;
 }
 
-const toggleCell = (list, index) => {
+export const toggleCell = (list, index) => {
     let toggledList = Array(list.length).fill(false);
     toggledList[index] = true;
     return toggledList;
 };
 
-const addCellValue = (list, index, value) => {
+export const addCellValue = (list, index, value) => {
     return [
         ...list.slice(0, index),
         value,
@@ -60,7 +60,7 @@ const addCellValue = (list, index, value) => {
     ];
 };
 
-const deleteCellValue = (list, index) => {
+export const deleteCellValue = (list, index) => {
     return [
         ...list.slice(0, index),
         null,
@@ -68,7 +68,7 @@ const deleteCellValue = (list, index) => {
     ];
 }
 
-const updateCellValue = (list, index, value) => {
+export const updateCellValue = (list, index, value) => {
     return [
         ...list.slice(0, index),
         value,
