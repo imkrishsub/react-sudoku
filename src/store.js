@@ -53,10 +53,19 @@ export const toggleCell = (list, index) => {
 };
 
 export const addCellValue = (list, index, value) => {
-    return [
-        ...list.slice(0, index),
+    let boxIterator = Math.floor(index / 9);
+    let cellIterator = index % 9;
+
+    let changedArray = [
+        ...list[boxIterator].slice(0, cellIterator),
         value,
-        ...list.slice(index + 1)
+        ...list[boxIterator].slice(cellIterator + 1)
+    ];
+
+    return [
+        ...list.slice(0, boxIterator),
+        changedArray,
+        ...list.slice(boxIterator + 1)
     ];
 };
 
@@ -88,12 +97,12 @@ const testToggleCell = () => {
 };
 
 const testAddCellValue = () => {
-    const listBefore = [0, 0, 0];
-    const listAfter = [0, 2, 0];
+    const listBefore = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1]];
+    const listAfter = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 1, 1, 1, 1]];
 
     deepFreeze(listBefore);
 
-    expect(addCellValue(listBefore, 1, 2)).toEqual(listAfter);
+    expect(addCellValue(listBefore, 10, 2)).toEqual(listAfter);
 }
 
 const testDeleteCellValue = () => {
