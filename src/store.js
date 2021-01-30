@@ -49,9 +49,9 @@ const checkForCompletion = (values) => {
     }
 
     // Column-wise
-    for (var i=0; i<3; i++) {
+    for (i=0; i<3; i++) {
 
-        for (var j=0; j<3; j++) {
+        for (j=0; j<3; j++) {
             sequence.push(
                 values[i][j], values[i][j+3], values[i][j+6],
                 values[i+3][j], values[i+3][j+3], values[i+3][j+6],
