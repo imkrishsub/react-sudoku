@@ -40,10 +40,27 @@ const generateInitialGameState = () => {
                  [null, null, null, 4, null, 2, null, null, null],
                  [9, null, null, 7, null, null, 4, null, null],
                  [null, null, null, 1, null, 8, null, 2, 6]],
-        clickState: Array(81).fill(false)
+        clickState: Array(81).fill(false),
     };
 
+    state.editState = getEditState(state.values);
+
     return state;
+}
+
+const getEditState = (values) => {
+    let editState = Array(81).fill(true);
+
+    for(var aBox of values) {
+        for (var aCell of aBox) {
+            const index = values.indexOf(aBox)*9 + aBox.indexOf(aCell);
+
+            if (aCell !== null) { editState[index] = false; }
+        }
+
+    }
+
+    return editState;
 }
 
 export const toggleCell = (list, index) => {

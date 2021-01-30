@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const Board = ({values, clickState, dispatch}) => {
+const Board = ({values, clickState, editState, dispatch}) => {
 
     const handleClick = (e) => {
-        console.log("handleOnClick()");
         dispatch({
             type: 'TOGGLE_CELL',
             index: e.target.id
@@ -13,10 +12,14 @@ const Board = ({values, clickState, dispatch}) => {
 
     const handleKeyPress = (e) => {
         e.preventDefault();
+        const value = parseInt(e.key, 10);
+
+        if (!(value > 0 && value < 10)) { return }
+
         dispatch({
             type: 'ADD_CELL_VALUE',
             index: e.target.id,
-            value: parseInt(e.key, 10)
+            value: value
         });
     }
 
@@ -26,13 +29,22 @@ const Board = ({values, clickState, dispatch}) => {
             return(
                 <div className="box" key={boxIterator}>
                 {boxes.map((item, cellIterator) => {
-                    let className = clickState[boxIterator*9 + cellIterator] ? "cell typable" : "cell";
+                    const className = clickState[boxIterator*9 + cellIterator] ? "cell typable" : "cell";
+                    const index = boxIterator*9 + cellIterator;
 
-                    return (
-                        <button className = {className} id = {boxIterator*9 + cellIterator} key = {boxIterator * 9 + cellIterator} onClick = {(e) => handleClick(e)} onKeyPress={(e) => handleKeyPress(e)}>
-                            {item}
-                        </button>
-                    )
+                    if (editState[index]) {
+                        return (
+                            <button className = {className} id = {index} key = {index} onClick = {(e) => handleClick(e)} onKeyPress={(e) => handleKeyPress(e)}>
+                                {item}
+                            </button>
+                        )
+                    } else {
+                        return (
+                            <button className = {className} id = {index} key = {index}>
+                                {item}
+                            </button>
+                        )
+                    }
                 })}
                 </div>
             )
@@ -44,7 +56,8 @@ const Board = ({values, clickState, dispatch}) => {
 const mapStateToProps = (state) => {
     return {
         values: state.values,
-        clickState: state.clickState
+        clickState: state.clickState,
+        editState: state.editState
     };
 };
 
