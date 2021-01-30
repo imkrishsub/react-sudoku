@@ -131,7 +131,6 @@ const testDeleteCellValue = () => {
 testToggleCell();
 testAddCellValue();
 testDeleteCellValue();
-testUpdateCellValue();
 
 console.log("Tests have passed!");
 

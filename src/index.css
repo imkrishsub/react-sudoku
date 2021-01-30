@@ -54,8 +54,8 @@ ol, ul {
 }
 
 .typable {
-    opacity: 0.8;
-    background-color: #D0CFFF;
+    border: 3px solid #7875E6;
+    /* background-color: #EEEEEE; */
 }
 
 .not-editable {
