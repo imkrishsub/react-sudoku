@@ -1,6 +1,6 @@
 # A Sudoku App based on React and Redux
 
-#### Check out the demo at [react-sudoku.imkrishsub.vercel.app](react-sudoku.imkrishsub.vercel.app)
+#### Check out the demo at [react-sudoku.imkrishsub.vercel.app](https://react-sudoku.imkrishsub.vercel.app)
 
 ---
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
