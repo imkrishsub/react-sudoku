@@ -28,7 +28,7 @@ const Board = ({values, clickState, editState, dispatch}) => {
                 index: e.target.id,
                 value: value
             });
-        }        
+        }
     }
 
     return (
@@ -65,7 +65,7 @@ const mapStateToProps = (state) => {
     return {
         values: state.values,
         clickState: state.clickState,
-        editState: state.editState
+        editState: state.editState,
     };
 };
 

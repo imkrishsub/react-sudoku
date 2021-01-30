@@ -1,16 +1,27 @@
 import React from 'react';
 import Board from './Board.js';
+import { connect } from 'react-redux';
 
-const Game = () => (
-    <div className="game">
-        <div className="game-board">
-            <Board />
-        </div>
-        <div className="game-info">
-            <div>Test</div>
-            <ol>{/* TODO */}</ol>
-        </div>
-    </div>
-);
+const Game = ({isComplete}, dispatch) => {
+    console.log("isComplete: " + isComplete);
 
-export default Game;
+    return (
+        <div className="game">
+            <div className="game-board">
+                <Board />
+            </div>
+            <div className="game-info">
+                <div>{isComplete ? "Congrats!" : "The puzzle has not been solved yet!"}</div>
+                <ol>{/* TODO */}</ol>
+            </div>
+        </div>
+    );
+}
+
+const mapStateToProps = (state) => {
+    return {
+        isComplete: state.isComplete
+    };
+};
+
+export default connect(mapStateToProps)(Game);

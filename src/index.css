@@ -71,10 +71,10 @@ ol, ul {
 }
 
 .game {
-  display: flex;
-  flex-direction: row;
+  display: block;
 }
 
 .game-info {
-  margin-left: 20px;
+  display: block;
+  margin: 20px;
 }
