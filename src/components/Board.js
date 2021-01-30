@@ -24,7 +24,7 @@ const Board = ({values, clickState, dispatch}) => {
         <div className="box-container">
         {values.map((boxes, boxIterator) => {
             return(
-                <div className="box">
+                <div className="box" key={boxIterator}>
                 {boxes.map((item, cellIterator) => {
                     let className = clickState[boxIterator*9 + cellIterator] ? "cell typable" : "cell";
 
