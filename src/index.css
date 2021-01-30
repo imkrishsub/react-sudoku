@@ -75,6 +75,10 @@ ol, ul {
 }
 
 .game-info {
-  display: block;
-  margin: 20px;
+    width: 450px;
+    text-align: center;
+    display: block;
+    margin: 20px;
+    font-weight: bold;
+    color: #AAAAAA;
 }

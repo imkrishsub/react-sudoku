@@ -3,7 +3,6 @@ import Board from './Board.js';
 import { connect } from 'react-redux';
 
 const Game = ({isComplete}, dispatch) => {
-    console.log("isComplete: " + isComplete);
 
     return (
         <div className="game">
@@ -12,7 +11,6 @@ const Game = ({isComplete}, dispatch) => {
             </div>
             <div className="game-info">
                 <div>{isComplete ? "Congrats!" : "The puzzle has not been solved yet!"}</div>
-                <ol>{/* TODO */}</ol>
             </div>
         </div>
     );
