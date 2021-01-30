@@ -29,8 +29,8 @@ const Board = ({values, clickState, editState, dispatch}) => {
             return(
                 <div className="box" key={boxIterator}>
                 {boxes.map((item, cellIterator) => {
-                    const className = clickState[boxIterator*9 + cellIterator] ? "cell typable" : "cell";
                     const index = boxIterator*9 + cellIterator;
+                    const className = clickState[index] ? "cell typable" : "cell";
 
                     if (editState[index]) {
                         return (
@@ -40,7 +40,7 @@ const Board = ({values, clickState, editState, dispatch}) => {
                         )
                     } else {
                         return (
-                            <button className = {className} id = {index} key = {index}>
+                            <button className = {className + ' not-editable'} id = {index} key = {index}>
                                 {item}
                             </button>
                         )
