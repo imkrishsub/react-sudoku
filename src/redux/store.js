@@ -1,25 +1,24 @@
-import { createStore } from 'redux';
-import expect from 'expect';
-import deepFreeze from 'deepfreeze';
+import { createStore } from "redux";
+import expect from "expect";
+import deepFreeze from "deepfreeze";
+import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "./actionTypes";
 
-function updateSudoku (state = generateInitialGameState(), action) {
+function sudoku(state = generateInitialGameState(), action) {
     switch(action.type) {
-        case 'TOGGLE_CELL':
+        case TOGGLE_CELL:
             return {
                 ...state,
                 clickState: toggleCell(state.clickState, action.index)
             };
-        case 'ADD_CELL_VALUE':
-
+        case ADD_VALUE:
             state = {
                 ...state,
                 values: addCellValue(state.values, action.index, action.value)
             };
 
             state.isComplete = checkForCompletion(state.values);
-            console.log("state.isComplete: " + state.isComplete);
             return state;
-        case 'DELETE_CELL_VALUE':
+        case DELETE_VALUE:
             return {
                 ...state,
                 values: deleteCellValue(state.values, action.index)
@@ -32,7 +31,7 @@ function updateSudoku (state = generateInitialGameState(), action) {
 const checkForCompletion = (values) => {
     let sequence = [];
 
-    // Row-wise
+    // Check rows
     for (var i=0; i<9; i=i+3) {
         for (var j=0; j<7; j=j+3) {
             sequence.push(
@@ -48,7 +47,7 @@ const checkForCompletion = (values) => {
 
     }
 
-    // Column-wise
+    // Check columns
     for (i=0; i<3; i++) {
 
         for (j=0; j<3; j++) {
@@ -65,7 +64,7 @@ const checkForCompletion = (values) => {
         }
     }
 
-    // Box-wise
+    // Check boxes
     for (var aBox of values) {
         if (hasDuplicates(aBox) || hasNull(aBox)) { return false; }
     }
@@ -209,6 +208,6 @@ testCheckForCompletion();
 
 console.log("Tests have passed!");
 
-let store = createStore(updateSudoku, generateInitialGameState());
+let store = createStore(sudoku, generateInitialGameState());
 
 export default store;

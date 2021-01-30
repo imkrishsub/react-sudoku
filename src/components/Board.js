@@ -1,21 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
+import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "../redux/actionTypes";
 
 const Board = ({values, clickState, editState, dispatch}) => {
 
     const handleClick = (e) => {
         dispatch({
-            type: 'TOGGLE_CELL',
+            type: TOGGLE_CELL,
             index: e.target.id
         });
     }
 
     const handleKeyDown = (e) => {
-        e.preventDefault();
-
-        if (e.key === 'Backspace' || e.key === 'Delete') {
+        if (e.key === "Backspace" || e.key === "Delete") {
             dispatch({
-                type: 'DELETE_CELL_VALUE',
+                type: DELETE_VALUE,
                 index: e.target.id
             });
         } else{
@@ -24,11 +23,13 @@ const Board = ({values, clickState, editState, dispatch}) => {
             if (!(value > 0 && value < 10)) { return }
 
             dispatch({
-                type: 'ADD_CELL_VALUE',
+                type: ADD_VALUE,
                 index: e.target.id,
                 value: value
             });
         }
+
+        e.preventDefault();
     }
 
     return (
@@ -48,7 +49,7 @@ const Board = ({values, clickState, editState, dispatch}) => {
                         )
                     } else {
                         return (
-                            <button className = {className + ' not-editable'} id = {index} key = {index}>
+                            <button className = {className + " not-editable"} id = {index} key = {index}>
                                 {item}
                             </button>
                         )

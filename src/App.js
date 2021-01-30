@@ -1,8 +1,7 @@
-import './App.css';
-import React from 'react';
-import Game from './components/Game.js';
-import { Provider } from 'react-redux';
-import store from './store';
+import React from "react";
+import Game from "./components/Game";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 class App extends React.Component {
     render() {
