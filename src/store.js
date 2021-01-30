@@ -19,11 +19,6 @@ function updateSudoku (state = generateInitialGameState(), action) {
                 ...state,
                 values: deleteCellValue(state.values, action.index)
             };
-        case 'UPDATE_CELL_VALUE':
-            return {
-                ...state,
-                values: updateCellValue(state.values, action.index, action.value)
-            };
         default:
             return state;
     }
@@ -87,20 +82,22 @@ export const addCellValue = (list, index, value) => {
 };
 
 export const deleteCellValue = (list, index) => {
-    return [
-        ...list.slice(0, index),
+    let boxIterator = Math.floor(index / 9);
+    let cellIterator = index % 9;
+
+    let changedArray = [
+        ...list[boxIterator].slice(0, cellIterator),
         null,
-        ...list.slice(index + 1)
+        ...list[boxIterator].slice(cellIterator + 1)
+    ];
+
+    return [
+        ...list.slice(0, boxIterator),
+        changedArray,
+        ...list.slice(boxIterator + 1)
     ];
 }
 
-export const updateCellValue = (list, index, value) => {
-    return [
-        ...list.slice(0, index),
-        value,
-        ...list.slice(index + 1)
-    ];
-}
 
 // Tests
 const testToggleCell = () => {
@@ -123,21 +120,12 @@ const testAddCellValue = () => {
 }
 
 const testDeleteCellValue = () => {
-    const listBefore = [1, 3, 4];
-    const listAfter = [1, 3, null];
+    const listBefore = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1]];
+    const listAfter = [[0, 0, 0, 0, 0, 0, 0, 0], [1, null, 1, 1, 1, 1, 1, 1, 1]];
 
     deepFreeze(listBefore);
 
-    expect(deleteCellValue(listBefore, 2)).toEqual(listAfter);
-}
-
-const testUpdateCellValue = () => {
-    const listBefore = [1, 5, 4];
-    const listAfter = [9, 5, 4];
-
-    deepFreeze(listBefore);
-
-    expect(updateCellValue(listBefore, 0, 9)).toEqual(listAfter);
+    expect(deleteCellValue(listBefore, 10)).toEqual(listAfter);
 }
 
 testToggleCell();

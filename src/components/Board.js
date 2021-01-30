@@ -10,17 +10,25 @@ const Board = ({values, clickState, editState, dispatch}) => {
         });
     }
 
-    const handleKeyPress = (e) => {
+    const handleKeyDown = (e) => {
         e.preventDefault();
-        const value = parseInt(e.key, 10);
 
-        if (!(value > 0 && value < 10)) { return }
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            dispatch({
+                type: 'DELETE_CELL_VALUE',
+                index: e.target.id
+            });
+        } else{
+            const value = parseInt(e.key, 10);
 
-        dispatch({
-            type: 'ADD_CELL_VALUE',
-            index: e.target.id,
-            value: value
-        });
+            if (!(value > 0 && value < 10)) { return }
+
+            dispatch({
+                type: 'ADD_CELL_VALUE',
+                index: e.target.id,
+                value: value
+            });
+        }        
     }
 
     return (
@@ -34,7 +42,7 @@ const Board = ({values, clickState, editState, dispatch}) => {
 
                     if (editState[index]) {
                         return (
-                            <button className = {className} id = {index} key = {index} onClick = {(e) => handleClick(e)} onKeyPress={(e) => handleKeyPress(e)}>
+                            <button className = {className} id = {index} key = {index} onClick = {(e) => handleClick(e)} onKeyDown={(e) => handleKeyDown(e)}>
                                 {item}
                             </button>
                         )
