@@ -1,0 +1,102 @@
+$primary-color: black;
+$highlight-color: #7875E6;
+$secondary-highlight-color: #DEDEDE;
+$number-highlight-color: crimson;
+
+$cell-size: 9vw;
+$box-width: 3*$cell-size;
+$sudoku-width: 3*$box-width + 1vw;
+
+$min-cell-size: 35px;
+$max-cell-size: 75px;
+$min-box-size: 3*$min-cell-size;
+$max-box-size: 3*$max-cell-size;
+$min-sudoku-size: 3*$min-box-size + 100px;
+$max-sudoku-size: 3*$max-box-size + 100px;
+
+body {
+    margin: 50px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.box:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.box {
+    display: flex;
+    flex-wrap: wrap;
+    width: $box-width;
+    min-width: $min-box-size;
+    max-width: $max-box-size;
+    border: 0.5px solid black;
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: $sudoku-width;
+    min-width: $min-sudoku-size;
+    max-width: $max-sudoku-size;
+}
+
+.cell {
+    background: none;
+    border: 1px solid #999;
+    float: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 34px;
+    height: $cell-size;
+    width: $cell-size;
+    min-width: $min-cell-size;
+    min-height: $min-cell-size;
+    max-width: $max-cell-size;
+    max-height: $max-cell-size;
+    padding: 0;
+    text-align: center;
+    color: $highlight-color;
+}
+
+.cell:focus {
+    outline: none;
+}
+
+.highlighted {
+    background-color: $secondary-highlight-color;
+}
+
+.typable {
+    border: 3px solid $highlight-color;
+}
+
+.not-editable {
+    color: $primary-color;
+}
+
+.game {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.highlighted-numbers {
+    color: $number-highlight-color;
+}
+
+.game-info {
+    width: $sudoku-width;
+    min-width: $min-sudoku-size;
+    max-width: $max-sudoku-size;
+    text-align: center;
+    display: block;
+    margin-top: 50px;
+    font-weight: bold;
+    color: $primary-color;
+}
