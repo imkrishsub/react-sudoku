@@ -14,9 +14,7 @@ const Game = ({isComplete}, dispatch) => (
 );
 
 const mapStateToProps = (state) => {
-    return {
-        isComplete: state.isComplete
-    };
+    return { isComplete: state.isComplete };
 };
 
 export default connect(mapStateToProps)(Game);

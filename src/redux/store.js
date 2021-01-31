@@ -1,6 +1,7 @@
 import { createStore } from "redux";
 import expect from "expect";
 import deepFreeze from "deepfreeze";
+import { toggleCell, addCellValue, deleteCellValue } from './actions';
 import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "./actionTypes";
 
 function sudoku(state = generateInitialGameState(), action) {
@@ -28,7 +29,7 @@ function sudoku(state = generateInitialGameState(), action) {
     }
 }
 
-const checkForCompletion = (values) => {
+export const checkForCompletion = (values) => {
     let sequence = [];
 
     // Check rows
@@ -116,47 +117,6 @@ const getEditState = (values) => {
 
     return editState;
 }
-
-export const toggleCell = (list, index) => {
-    let toggledList = Array(list.length).fill(false);
-    toggledList[index] = true;
-    return toggledList;
-};
-
-export const addCellValue = (list, index, value) => {
-    let boxIterator = Math.floor(index / 9);
-    let cellIterator = index % 9;
-
-    let changedArray = [
-        ...list[boxIterator].slice(0, cellIterator),
-        value,
-        ...list[boxIterator].slice(cellIterator + 1)
-    ];
-
-    return [
-        ...list.slice(0, boxIterator),
-        changedArray,
-        ...list.slice(boxIterator + 1)
-    ];
-};
-
-export const deleteCellValue = (list, index) => {
-    let boxIterator = Math.floor(index / 9);
-    let cellIterator = index % 9;
-
-    let changedArray = [
-        ...list[boxIterator].slice(0, cellIterator),
-        null,
-        ...list[boxIterator].slice(cellIterator + 1)
-    ];
-
-    return [
-        ...list.slice(0, boxIterator),
-        changedArray,
-        ...list.slice(boxIterator + 1)
-    ];
-}
-
 
 // Tests
 const testToggleCell = () => {
