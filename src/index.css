@@ -45,7 +45,7 @@ body {
 }
 
 .highlighted {
-    background-color: #EEEEEE;
+    background-color: #DEDEDE;
 }
 
 .typable {
@@ -58,6 +58,10 @@ body {
 
 .game {
     display: block;
+}
+
+.highlighted-numbers {
+    color: crimson;
 }
 
 .game-info {

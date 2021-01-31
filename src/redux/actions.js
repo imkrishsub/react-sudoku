@@ -70,6 +70,28 @@ export const toggleCell = (index) => {
     ];
 };
 
+export const highlightCellsWithSameNumber = (list, index) => {
+    let cellsWithSameNumber = Array(81).fill(false);
+
+    let boxId = Math.floor(index / 9);
+    let cellId = index % 9;
+
+    const cellValue = list[boxId][cellId];
+
+    for (let aBox of list) {
+        for (let aCell of aBox) {
+            if (aCell === cellValue) {
+                boxId = list.indexOf(aBox);
+                cellId = aBox.indexOf(aCell);
+
+                cellsWithSameNumber[9*boxId + cellId] = true;
+            }
+        }
+    }
+
+    return cellsWithSameNumber;
+}
+
 export const addCellValue = (list, index, value) => {
     let boxIterator = Math.floor(index / 9);
     let cellIterator = index % 9;

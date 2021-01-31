@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import classNames from 'classnames';
 import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "../redux/actionTypes";
 
-const Board = ({values, clickState, editState, highlightState, dispatch}) => {
+const Board = ({values, clickState, editState, highlightState, numberHighlightState, dispatch}) => {
 
     const handleClick = (e) => {
         dispatch({
@@ -43,12 +43,10 @@ const Board = ({values, clickState, editState, highlightState, dispatch}) => {
                     const btnClassName = classNames({
                         cell: true,
                         "highlighted": highlightState[index],
-                        "typable": clickState[index],
-                        "not-editable": !editState[index]
+                        "typable": clickState[index] && editState[index],
+                        "not-editable": !editState[index],
+                        "highlighted-numbers": numberHighlightState[index]
                     });
-
-                    // let className = highlightState[index] ? "highlighted" : "";
-                    // className = clickState[index] ? className.concat(" typable") : className;
 
                     if (editState[index]) {
                         return (
@@ -58,7 +56,7 @@ const Board = ({values, clickState, editState, highlightState, dispatch}) => {
                         )
                     } else {
                         return (
-                            <button className = {btnClassName} id = {index} key = {index}>
+                            <button className = {btnClassName} id = {index} key = {index} onClick = {(e) => handleClick(e)}>
                                 {item}
                             </button>
                         )
@@ -76,7 +74,8 @@ const mapStateToProps = (state) => {
         values: state.values,
         clickState: state.clickState,
         editState: state.editState,
-        highlightState: state.highlightState
+        highlightState: state.highlightState,
+        numberHighlightState: state.numberHighlightState
     };
 };
 

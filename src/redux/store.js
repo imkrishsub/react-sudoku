@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 import expect from "expect";
 import deepFreeze from "deepfreeze";
-import { toggleCell, highlightCells, addCellValue, deleteCellValue } from './actions';
+import { toggleCell, highlightCells, addCellValue, deleteCellValue, highlightCellsWithSameNumber } from './actions';
 import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "./actionTypes";
 
 function sudoku(state = generateInitialGameState(), action) {
@@ -10,15 +10,18 @@ function sudoku(state = generateInitialGameState(), action) {
             return {
                 ...state,
                 highlightState: highlightCells(action.index),
-                clickState: toggleCell(action.index)
+                clickState: toggleCell(action.index),
+                numberHighlightState: highlightCellsWithSameNumber(state.values, action.index)
             };
         case ADD_VALUE:
             state = {
                 ...state,
-                values: addCellValue(state.values, action.index, action.value)
+                values: addCellValue(state.values, action.index, action.value),
             };
 
             state.isComplete = checkForCompletion(state.values);
+            state.numberHighlightState = highlightCellsWithSameNumber(state.values, action.index);
+            
             return state;
         case DELETE_VALUE:
             return {
@@ -97,6 +100,7 @@ const generateInitialGameState = () => {
                  [null, null, null, 1, null, 8, null, 2, 6]],
         clickState: Array(81).fill(false),
         highlightState: Array(81).fill(false),
+        numberHighlightState: Array(81).fill(false),
         isComplete: false
     };
 
