@@ -5,17 +5,16 @@ $number-highlight-color: crimson;
 
 $cell-size: 9vw;
 $box-width: 3*$cell-size;
-$sudoku-width: 3*$box-width + 1vw;
+$sudoku-width: 3*$box-width + 1.5vw;
 
 $min-cell-size: 35px;
-$max-cell-size: 75px;
+$max-cell-size: 65px;
 $min-box-size: 3*$min-cell-size;
 $max-box-size: 3*$max-cell-size;
-$min-sudoku-size: 3*$min-box-size + 100px;
-$max-sudoku-size: 3*$max-box-size + 100px;
+$min-sudoku-size: 3*$min-box-size + $min-cell-size;
+$max-sudoku-size: 3*$max-box-size + $max-cell-size;
 
 body {
-    margin: 50px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -35,7 +34,9 @@ body {
     width: $box-width;
     min-width: $min-box-size;
     max-width: $max-box-size;
+    // box-sizing: border-box;
     border: 0.5px solid black;
+
 }
 
 .box-container {
@@ -44,9 +45,12 @@ body {
     width: $sudoku-width;
     min-width: $min-sudoku-size;
     max-width: $max-sudoku-size;
+    margin: 0px;
+    // box-sizing: border-box;
 }
 
 .cell {
+    // box-sizing: border-box;
     background: none;
     border: 1px solid #999;
     float: left;
@@ -82,8 +86,6 @@ body {
 
 .game {
     display: block;
-    width: 100%;
-    height: 100%;
 }
 
 .highlighted-numbers {
@@ -92,8 +94,8 @@ body {
 
 .game-info {
     width: $sudoku-width;
-    min-width: $min-sudoku-size;
-    max-width: $max-sudoku-size;
+    min-width: 3*$min-box-size;
+    max-width: 3*$max-box-size;
     text-align: center;
     display: block;
     margin-top: 50px;
