@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 import expect from "expect";
 import deepFreeze from "deepfreeze";
-import { toggleCell, addCellValue, deleteCellValue } from './actions';
+import { toggleCell, highlightCells, addCellValue, deleteCellValue } from './actions';
 import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "./actionTypes";
 
 function sudoku(state = generateInitialGameState(), action) {
@@ -9,7 +9,8 @@ function sudoku(state = generateInitialGameState(), action) {
         case TOGGLE_CELL:
             return {
                 ...state,
-                clickState: toggleCell(state.clickState, action.index)
+                highlightState: highlightCells(action.index),
+                clickState: toggleCell(action.index)
             };
         case ADD_VALUE:
             state = {
@@ -95,6 +96,7 @@ const generateInitialGameState = () => {
                  [9, null, null, 7, null, null, 4, null, null],
                  [null, null, null, 1, null, 8, null, 2, 6]],
         clickState: Array(81).fill(false),
+        highlightState: Array(81).fill(false),
         isComplete: false
     };
 
@@ -120,14 +122,29 @@ const getEditState = (values) => {
 
 // Tests
 const testToggleCell = () => {
-    const listBefore = [false, false, false, false];
-    const listAfter = [false, true, false, false];
+    let listAfter = Array(81).fill(false);
+    listAfter[21] = true;
 
-    deepFreeze(listBefore);
-
-    expect(toggleCell(listBefore, 1)).toEqual(listAfter);
-    expect(listBefore.length).toEqual(listAfter.length);
+    expect(toggleCell(21)).toEqual(listAfter);
 };
+
+const testHighlightCells = () => {
+    let listAfter = Array(81).fill(false);
+
+    assign(listAfter, [0, 1, 2, 3, 4, 5, 6, 7, 8], Array(9).fill(true));
+    assign(listAfter, [3, 4, 5, 12, 13, 14, 21, 22, 23], Array(9).fill(true));
+    assign(listAfter, [1, 4, 7, 28, 31, 34, 55, 58, 61], Array(9).fill(true));
+
+    expect(highlightCells(4)).toEqual(listAfter);
+    expect(listAfter.length).toEqual(listAfter.length);
+};
+
+// https://stackoverflow.com/questions/20294193/shortest-way-to-change-multiple-values-of-an-array-at-once
+export const assign = (obj, props, vals) => {
+    for (var i = 0; i < props.length; i++) {
+        obj[props[i]] = vals[i];
+    }
+}
 
 const testAddCellValue = () => {
     const listBefore = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1]];
@@ -162,6 +179,7 @@ const testCheckForCompletion = () => {
 }
 
 testToggleCell();
+testHighlightCells();
 testAddCellValue();
 testDeleteCellValue();
 testCheckForCompletion();

@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import classNames from 'classnames';
 import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "../redux/actionTypes";
 
-const Board = ({values, clickState, editState, dispatch}) => {
+const Board = ({values, clickState, editState, highlightState, dispatch}) => {
 
     const handleClick = (e) => {
         dispatch({
@@ -39,17 +40,25 @@ const Board = ({values, clickState, editState, dispatch}) => {
                 <div className="box" key={boxIterator}>
                 {boxes.map((item, cellIterator) => {
                     const index = boxIterator*9 + cellIterator;
-                    const className = clickState[index] ? "cell typable" : "cell";
+                    const btnClassName = classNames({
+                        cell: true,
+                        "highlighted": highlightState[index],
+                        "typable": clickState[index],
+                        "not-editable": !editState[index]
+                    });
+
+                    // let className = highlightState[index] ? "highlighted" : "";
+                    // className = clickState[index] ? className.concat(" typable") : className;
 
                     if (editState[index]) {
                         return (
-                            <button className = {className} id = {index} key = {index} onClick = {(e) => handleClick(e)} onKeyDown={(e) => handleKeyDown(e)}>
+                            <button className = {btnClassName} id = {index} key = {index} onClick = {(e) => handleClick(e)} onKeyDown={(e) => handleKeyDown(e)}>
                                 {item}
                             </button>
                         )
                     } else {
                         return (
-                            <button className = {className + " not-editable"} id = {index} key = {index}>
+                            <button className = {btnClassName} id = {index} key = {index}>
                                 {item}
                             </button>
                         )
@@ -67,6 +76,7 @@ const mapStateToProps = (state) => {
         values: state.values,
         clickState: state.clickState,
         editState: state.editState,
+        highlightState: state.highlightState
     };
 };
 

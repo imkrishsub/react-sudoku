@@ -44,6 +44,10 @@ body {
     outline: none;
 }
 
+.highlighted {
+    background-color: #EEEEEE;
+}
+
 .typable {
     border: 3px solid #7875E6;
 }
