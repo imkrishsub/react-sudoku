@@ -1,11 +1,18 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import expect from "expect";
 import deepFreeze from "deepfreeze";
 import { toggleCell, highlightCells, addCellValue, deleteCellValue, highlightCellsWithSameNumber } from './actions';
-import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "./actionTypes";
+import { ADD_VALUE, DELETE_VALUE, TOGGLE_CELL, LOAD_PUZZLE } from "./actionTypes";
+import thunk from 'redux-thunk';
 
 function sudoku(state = generateInitialGameState(), action) {
     switch(action.type) {
+        case LOAD_PUZZLE:
+            return {
+                    ...state,
+                    values: action.payload.puzzle,
+                    editState: getEditState(action.payload.puzzle)
+                }
         case TOGGLE_CELL:
             return {
                 ...state,
@@ -21,7 +28,7 @@ function sudoku(state = generateInitialGameState(), action) {
 
             state.isComplete = checkForCompletion(state.values);
             state.numberHighlightState = highlightCellsWithSameNumber(state.values, action.index);
-            
+
             return state;
         case DELETE_VALUE:
             return {
@@ -32,6 +39,8 @@ function sudoku(state = generateInitialGameState(), action) {
             return state;
     }
 }
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const checkForCompletion = (values) => {
     let sequence = [];
@@ -89,15 +98,15 @@ const hasNull = (array) => {
 
 const generateInitialGameState = () => {
     let state = {
-        values: [[6, null, null, null, 7, 5, null, null, null],
-                 [null, null, null, null, null, 1, null, null, 2],
-                 [8, 7, 2, 6, null, null, null, null, 3],
-                 [null, 2, null, null, null, 4, null, 6, 9],
-                 [null, 5, null, 3, null, 6, null, null, 4],
-                 [null, null, 9, null, null, 1, null, null, 5],
-                 [null, null, null, 4, null, 2, null, null, null],
-                 [9, null, null, 7, null, null, 4, null, null],
-                 [null, null, null, 1, null, 8, null, 2, 6]],
+        values: [Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0),
+                 Array(9).fill(0)],
         clickState: Array(81).fill(false),
         highlightState: Array(81).fill(false),
         numberHighlightState: Array(81).fill(false),
@@ -190,6 +199,8 @@ testCheckForCompletion();
 
 console.log("Tests have passed!");
 
-let store = createStore(sudoku, generateInitialGameState());
+const store = createStore(sudoku, composeEnhancers(
+    applyMiddleware(thunk)
+));
 
 export default store;

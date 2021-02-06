@@ -1,18 +1,29 @@
 import React from "react";
 import { connect } from "react-redux";
 import classNames from 'classnames';
-import {ADD_VALUE, DELETE_VALUE, TOGGLE_CELL} from "../redux/actionTypes";
+import { ADD_VALUE, DELETE_VALUE, TOGGLE_CELL } from "../redux/actionTypes";
+import { fetchPuzzle } from "../redux/actions";
 
-const Board = ({values, clickState, editState, highlightState, numberHighlightState, dispatch}) => {
+class Board extends React.Component {
 
-    const handleClick = (e) => {
+    componentWillMount() {
+        const { dispatch } = this.props
+
+        dispatch(fetchPuzzle());
+    }
+
+    handleClick = (e) => {
+        const { dispatch } = this.props
+
         dispatch({
             type: TOGGLE_CELL,
             index: e.target.id
         });
     }
 
-    const handleKeyDown = (e) => {
+    handleKeyDown = (e) => {
+        const { dispatch } = this.props
+
         if (e.key === "Backspace" || e.key === "Delete") {
             dispatch({
                 type: DELETE_VALUE,
@@ -33,40 +44,47 @@ const Board = ({values, clickState, editState, highlightState, numberHighlightSt
         e.preventDefault();
     }
 
-    return (
-        <div className="box-container">
-        {values.map((boxes, boxIterator) => {
-            return(
-                <div className="box" key={boxIterator}>
-                {boxes.map((item, cellIterator) => {
-                    const index = boxIterator*9 + cellIterator;
-                    const btnClassName = classNames({
-                        cell: true,
-                        "highlighted": highlightState[index],
-                        "typable": clickState[index] && editState[index],
-                        "not-editable": !editState[index],
-                        "highlighted-numbers": numberHighlightState[index]
-                    });
 
-                    if (editState[index]) {
-                        return (
-                            <button className = {btnClassName} id = {index} key = {index} onClick = {(e) => handleClick(e)} onKeyDown={(e) => handleKeyDown(e)}>
-                                {item}
-                            </button>
-                        )
-                    } else {
-                        return (
-                            <button className = {btnClassName} id = {index} key = {index} onClick = {(e) => handleClick(e)}>
-                                {item}
-                            </button>
-                        )
-                    }
-                })}
-                </div>
-            )
-        })}
-    </div>
-    );
+
+    render() {
+        const {values, clickState, editState, highlightState, numberHighlightState } = this.props
+
+        return (
+            <div className="box-container">
+
+            {values.map((boxes, boxIterator) => {
+                return(
+                    <div className="box" key={boxIterator}>
+                    {boxes.map((item, cellIterator) => {
+                        const index = boxIterator*9 + cellIterator;
+                        const btnClassName = classNames({
+                            cell: true,
+                            "highlighted": highlightState[index],
+                            "typable": clickState[index] && editState[index],
+                            "not-editable": !editState[index],
+                            "highlighted-numbers": numberHighlightState[index]
+                        });
+
+                        if (editState[index]) {
+                            return (
+                                <button className = {btnClassName} id = {index} key = {index} onClick = {(e) => this.handleClick(e)} onKeyDown={(e) => this.handleKeyDown(e)}>
+                                    {item === 0 ? null : item}
+                                </button>
+                            )
+                        } else {
+                            return (
+                                <button className = {btnClassName} id = {index} key = {index} onClick = {(e) => this.handleClick(e)}>
+                                    {item === 0 ? null : item}
+                                </button>
+                            )
+                        }
+                    })}
+                    </div>
+                )
+            })}
+        </div>
+        );
+    }
 };
 
 const mapStateToProps = (state) => {
