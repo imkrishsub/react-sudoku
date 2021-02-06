@@ -8,7 +8,7 @@ const Game = ({isComplete}, dispatch) => (
             <Board />
         </div>
         <div className="game-info">
-            <div>{isComplete ? "Congrats!" : "The puzzle has not been solved yet!"}</div>
+            <div>{isComplete ? "Congrats — you solved the puzzle!" : "The puzzle has not been solved yet"}</div>
         </div>
     </div>
 );
