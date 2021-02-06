@@ -1,22 +1,5 @@
-import { assign } from "./store";
+import { assign } from "../utils";
 import { LOAD_PUZZLE } from "./actionTypes";
-
-const fetchPuzzleSuccess = puzzle => ({
-    type: LOAD_PUZZLE,
-    payload: { puzzle }
-})
-
-export const fetchPuzzle = () => {
-    console.log("Fetching a puzzle...");
-
-    return (dispatch) => {
-        return fetch("https://sugoku.herokuapp.com/board?difficulty=medium")
-                .then(response => response.json())
-                .then(data => {
-                    dispatch(fetchPuzzleSuccess(data.board))
-                });
-        };
-    }
 
 export const highlightCells = (index) => {
     let highlightedCells = Array(81).fill(false);
@@ -142,4 +125,21 @@ export const deleteCellValue = (list, index) => {
         changedArray,
         ...list.slice(boxIterator + 1)
     ];
+}
+
+const fetchPuzzleSuccess = puzzle => ({
+    type: LOAD_PUZZLE,
+    payload: { puzzle }
+})
+
+export const fetchPuzzle = () => {
+    console.log("Fetching a puzzle...");
+
+    return (dispatch) => {
+        return fetch("https://sugoku.herokuapp.com/board?difficulty=medium")
+                .then(response => response.json())
+                .then(data => {
+                    dispatch(fetchPuzzleSuccess(data.board))
+                });
+    };
 }

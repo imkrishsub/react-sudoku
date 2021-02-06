@@ -1,9 +1,8 @@
+import { toggleCell, highlightCells, addCellValue, deleteCellValue, highlightCellsWithSameNumber } from "./actions";
 import { createStore, applyMiddleware, compose } from "redux";
-import expect from "expect";
-import deepFreeze from "deepfreeze";
-import { toggleCell, highlightCells, addCellValue, deleteCellValue, highlightCellsWithSameNumber } from './actions';
 import { ADD_VALUE, DELETE_VALUE, TOGGLE_CELL, LOAD_PUZZLE } from "./actionTypes";
-import thunk from 'redux-thunk';
+import thunk from "redux-thunk";
+// import { runTests } from "./tests";
 
 function sudoku(state = generateInitialGameState(), action) {
     switch(action.type) {
@@ -125,7 +124,7 @@ const getEditState = (values) => {
         for (var aCell of aBox) {
             const index = values.indexOf(aBox)*9 + aBox.indexOf(aCell);
 
-            if (aCell !== null) { editState[index] = false; }
+            if (aCell !== 0) { editState[index] = false; }
         }
 
     }
@@ -133,74 +132,10 @@ const getEditState = (values) => {
     return editState;
 }
 
-// Tests
-const testToggleCell = () => {
-    let listAfter = Array(81).fill(false);
-    listAfter[21] = true;
-
-    expect(toggleCell(21)).toEqual(listAfter);
-};
-
-const testHighlightCells = () => {
-    let listAfter = Array(81).fill(false);
-
-    assign(listAfter, [0, 1, 2, 3, 4, 5, 6, 7, 8], Array(9).fill(true));
-    assign(listAfter, [3, 4, 5, 12, 13, 14, 21, 22, 23], Array(9).fill(true));
-    assign(listAfter, [1, 4, 7, 28, 31, 34, 55, 58, 61], Array(9).fill(true));
-
-    expect(highlightCells(4)).toEqual(listAfter);
-    expect(listAfter.length).toEqual(listAfter.length);
-};
-
-// https://stackoverflow.com/questions/20294193/shortest-way-to-change-multiple-values-of-an-array-at-once
-export const assign = (obj, props, vals) => {
-    for (var i = 0; i < props.length; i++) {
-        obj[props[i]] = vals[i];
-    }
-}
-
-const testAddCellValue = () => {
-    const listBefore = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1]];
-    const listAfter = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 1, 1, 1, 1]];
-
-    deepFreeze(listBefore);
-
-    expect(addCellValue(listBefore, 10, 2)).toEqual(listAfter);
-}
-
-const testDeleteCellValue = () => {
-    const listBefore = [[0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1]];
-    const listAfter = [[0, 0, 0, 0, 0, 0, 0, 0], [1, null, 1, 1, 1, 1, 1, 1, 1]];
-
-    deepFreeze(listBefore);
-
-    expect(deleteCellValue(listBefore, 10)).toEqual(listAfter);
-}
-
-const testCheckForCompletion = () => {
-    const values =  [[6, 3, 1, 2, 7, 5, 9, 4, 8],
-                     [5, 4, 9, 8, 3, 1, 6, 7, 2],
-                     [8, 7, 2, 6, 9, 4, 5, 1, 3],
-                     [8, 2, 3, 7, 5, 4, 1, 6, 9],
-                     [1, 5, 7, 3, 9, 6, 2, 8, 4],
-                     [4, 6, 9, 2, 8, 1, 7, 3, 5],
-                     [5, 1, 6, 4, 9, 2, 3, 8, 7],
-                     [9, 2, 8, 7, 6, 3, 4, 1, 5],
-                     [3, 4, 7, 1, 5, 8, 9, 2, 6]];
-
-    expect(checkForCompletion(values)).toEqual(true);
-}
-
-testToggleCell();
-testHighlightCells();
-testAddCellValue();
-testDeleteCellValue();
-testCheckForCompletion();
-
-console.log("Tests have passed!");
-
 const store = createStore(sudoku, composeEnhancers(
     applyMiddleware(thunk)
 ));
+
+// runTests();
 
 export default store;
