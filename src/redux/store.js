@@ -7,11 +7,14 @@ import thunk from "redux-thunk";
 function sudoku(state = generateInitialGameState(), action) {
     switch(action.type) {
         case LOAD_PUZZLE:
-            return {
-                    ...state,
-                    values: action.payload.puzzle,
-                    editState: getEditState(action.payload.puzzle)
-                }
+            state = {
+                ...state,
+                values: convertToBoxes(action.payload.puzzle)
+            };
+
+            state.editState = getEditState(state.values);
+
+            return state;
         case TOGGLE_CELL:
             return {
                 ...state,
@@ -92,6 +95,27 @@ const hasDuplicates = (array) => {
 
 const hasNull = (array) => {
     return array.includes(null);
+}
+
+const convertToBoxes = (values) => {
+    let valuesTransposedToBoxes = Array(9);
+
+    for (var i=0; i<9; i++) {
+        // for each row
+
+        valuesTransposedToBoxes[i] = Array(9).fill(0);
+
+        for (var j=0; j<9; j=j+3) {
+            var rowId = 3* Math.floor(i / 3) + Math.floor(j / 3);
+            var index = 3 * (i % 3);
+
+            valuesTransposedToBoxes[i][j] = values[rowId][index];
+            valuesTransposedToBoxes[i][j+1] = values[rowId][index+1];
+            valuesTransposedToBoxes[i][j+2] = values[rowId][index+2];
+        }
+    }
+
+    return valuesTransposedToBoxes;
 }
 
 
