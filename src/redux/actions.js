@@ -136,7 +136,7 @@ export const fetchPuzzle = () => {
     console.log("Fetching a puzzle...");
 
     return (dispatch) => {
-        return fetch("https://sugoku.herokuapp.com/board?difficulty=medium")
+        return fetch("https://sugoku.herokuapp.com/board?difficulty=random")
                 .then(response => response.json())
                 .then(data => {
                     dispatch(fetchPuzzleSuccess(data.board))
