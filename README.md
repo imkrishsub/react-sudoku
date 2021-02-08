@@ -5,6 +5,13 @@
 #### Check out the demo at [react-sudoku.imkrishsub.vercel.app](https://react-sudoku.imkrishsub.vercel.app)
 
 ---
+
+# Features
+- A Redux store that gets asynchronously initialized from [Sugoku API](https://github.com/bertoort/sugoku). I use [Redux Thunk](https://github.com/reduxjs/redux-thunk) to achieve async initial loading and fetch API to receive the puzzle data. 
+- A custom validator that checks if the puzzle is complete.
+- Redux reducer includes actions for highlighting cells with same values across row, column, and box. 
+- Unit tests via [Jest.](https://jestjs.io/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
