@@ -1,9 +1,10 @@
-import { toggleCell, highlightCells, addCellValue, deleteCellValue, highlightCellsWithSameNumber } from "./actions";
+import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
 import { ADD_VALUE, DELETE_VALUE, TOGGLE_CELL, LOAD_PUZZLE } from "./actionTypes";
-import thunk from "redux-thunk";
-// import { runTests } from "./tests";
+import { toggleCell, highlightCells, addCellValue, deleteCellValue, highlightCellsWithSameNumber } from "./actions";
+import { hasDuplicates, hasNullOrZero } from "../utils";
 
+// The reducer
 function sudoku(state = generateInitialGameState(), action) {
     switch(action.type) {
         case LOAD_PUZZLE:
@@ -42,8 +43,7 @@ function sudoku(state = generateInitialGameState(), action) {
     }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+// A custom Sudoku validator
 export const checkForCompletion = (values) => {
     let sequence = [];
 
@@ -56,7 +56,7 @@ export const checkForCompletion = (values) => {
                 values[i+2][j], values[i+2][j+1], values[i+2][j+2]
             );
 
-            if (hasDuplicates(sequence) || hasNull(sequence)) { return false; }
+            if (hasDuplicates(sequence) || hasNullOrZero(sequence)) { return false; }
 
             sequence = [];
         }
@@ -74,7 +74,7 @@ export const checkForCompletion = (values) => {
             );
 
 
-            if (hasDuplicates(sequence) || hasNull(sequence)) { return false; }
+            if (hasDuplicates(sequence) || hasNullOrZero(sequence)) { return false; }
 
             sequence = [];
         }
@@ -82,22 +82,13 @@ export const checkForCompletion = (values) => {
 
     // Check boxes
     for (var aBox of values) {
-        if (hasDuplicates(aBox) || hasNull(aBox)) { return false; }
+        if (hasDuplicates(aBox) || hasNullOrZero(aBox)) { return false; }
     }
 
     return true;
 }
 
-// https://stackoverflow.com/questions/7376598/in-javascript-how-do-i-check-if-an-array-has-duplicate-values
-const hasDuplicates = (array) => {
-    return (new Set(array)).size !== array.length;
-}
-
-const hasNull = (array) => {
-    return array.includes(null);
-}
-
-const convertToBoxes = (values) => {
+export const convertToBoxes = (values) => {
     let valuesTransposedToBoxes = Array(9);
 
     for (var i=0; i<9; i++) {
@@ -156,10 +147,10 @@ const getEditState = (values) => {
     return editState;
 }
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(sudoku, composeEnhancers(
     applyMiddleware(thunk)
 ));
-
-// runTests();
 
 export default store;
